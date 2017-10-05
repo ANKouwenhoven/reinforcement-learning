@@ -10,7 +10,7 @@ public class RunMe {
 		
 		//load the maze
 		//TODO replace this with the location to your maze on your file system
-		Maze maze = new Maze(new File("C:\\users\\Arnoud\\Documents\\Schoolwork\\Computational Intelligence\\Reinforcement Learning\\data\\toy_maze.txt"));
+		Maze maze = new Maze(new File("C:\\toy_maze.txt"));
 		
 		//Set the reward at the bottom right to 10
 		maze.setR(maze.getState(9, 9), 10);
@@ -25,12 +25,27 @@ public class RunMe {
 		QLearning learn = new MyQLearning();
 		
 		boolean stop=false;
-		
+
+		int steps = 0;
+		int criterion = 30000;
+		double epsilon = 0.5;
+
+
+
 		//keep learning until you decide to stop
 		while (!stop) {
 			//TODO implement the action selection and learning cycle
-			
-			//TODO figure out a stopping criterion			
+			robot.doAction(selection.getEGreedyAction(robot, maze, learn, epsilon), maze);
+			//learn.updateQ
+
+			if(robot.x == 9 && robot.y == 9){
+				robot.reset();
+			}
+			//TODO figure out a stopping criterion
+			steps++;
+			if(steps>=criterion){
+				stop = true;
+			}
 		}
 
 	}
