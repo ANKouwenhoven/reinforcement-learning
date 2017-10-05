@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class MyEGreedy extends EGreedy {
 
+	Random randomGenerator = new Random();
+
 	/**
 	 * Randomly selects an action from all valid actions.
 	 * @param r - Agent that selects the action
@@ -16,7 +18,6 @@ public class MyEGreedy extends EGreedy {
 	@Override
 	public Action getRandomAction(Agent r, Maze m) {
 		ArrayList<Action> possibleActions = m.getValidActions(r);
-		Random randomGenerator = new Random();
 		int randomIndex = randomGenerator.nextInt(possibleActions.size());
 
 		return possibleActions.get(randomIndex);
@@ -27,7 +28,7 @@ public class MyEGreedy extends EGreedy {
 	 * @param r - Agent that selects the action
 	 * @param m - Maze the agent is in
 	 * @param q - QLearning object
-	 * @return - The best action for the agent to take.
+	 * @return - The best action for the agent to take
 	 */
 	@Override
 	public Action getBestAction(Agent r, Maze m, QLearning q) {
@@ -35,7 +36,7 @@ public class MyEGreedy extends EGreedy {
 		State currentState = r.getState(m);
 		Action bestAction = getRandomAction(r, m);
 
-		for(Action possibleAction : possibleActions){
+		for(Action possibleAction : possibleActions) {
 			if(q.getQ(currentState, possibleAction) > q.getQ(currentState, bestAction)) {
 				bestAction = possibleAction;
 			}
@@ -44,10 +45,24 @@ public class MyEGreedy extends EGreedy {
 		return bestAction;
 	}
 
+	/**
+	 * Selects either a random action or the best action based on double epsilon.
+	 * @param r - Agent that selects the action
+	 * @param m - Maze the agent is in
+	 * @param q - QLearning object
+	 * @param epsilon - decides what type of action is taken
+	 * @return - Either the best action or a random one
+	 */
 	@Override
 	public Action getEGreedyAction(Agent r, Maze m, QLearning q, double epsilon) {
-		//TODO to select between random or best action selection based on epsilon.
-		return null;
+		Action greedyAction;
+		if (randomGenerator.nextDouble() > epsilon) {
+			greedyAction = getBestAction(r, m, q);
+		} else {
+			greedyAction = getRandomAction(r, q);
+		}
+
+		return greedyAction;
 	}
 
 }
