@@ -59,7 +59,7 @@ public class MyEGreedy extends EGreedy {
 		if (randomGenerator.nextDouble() > epsilon) {
 			greedyAction = getBestAction(r, m, q);
 		} else {
-			greedyAction = getRandomAction(r, q);
+			greedyAction = getRandomAction(r, m);
 		}
 
 		return greedyAction;
