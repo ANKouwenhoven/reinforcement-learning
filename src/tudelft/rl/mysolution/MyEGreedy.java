@@ -8,10 +8,10 @@ import java.util.Random;
 public class MyEGreedy extends EGreedy {
 
 	/**
-	 *
-	 * @param r
-	 * @param m
-	 * @return
+	 * Randomly selects an action from all valid actions.
+	 * @param r - Agent that selects the action
+	 * @param m - Maze the agent is in
+	 * @return - a randomly selected action
 	 */
 	@Override
 	public Action getRandomAction(Agent r, Maze m) {
@@ -22,23 +22,26 @@ public class MyEGreedy extends EGreedy {
 		return possibleActions.get(randomIndex);
 	}
 
+	/**
+	 * Returns the best possible action, determined by every action's Q value.
+	 * @param r - Agent that selects the action
+	 * @param m - Maze the agent is in
+	 * @param q - QLearning object
+	 * @return - The best action for the agent to take.
+	 */
 	@Override
 	public Action getBestAction(Agent r, Maze m, QLearning q) {
-		//TODO to select the best possible action currently known in State s.
 		ArrayList<Action> possibleActions = m.getValidActions(r);
 		State currentState = r.getState(m);
+		Action bestAction = getRandomAction(r, m);
 
-		Action best = getRandomAction(r, m);
-
-		for(int i = 1; i<possibleActions.size();i++){
-			Action possibleAction = possibleActions.get(i);
-
-			if(q.getQ(currentState,possibleAction)>q.getQ(currentState,best)){
-				best = possibleAction;
+		for(Action possibleAction : possibleActions){
+			if(q.getQ(currentState, possibleAction) > q.getQ(currentState, bestAction)) {
+				bestAction = possibleAction;
 			}
 		}
 
-		return best;
+		return bestAction;
 	}
 
 	@Override
