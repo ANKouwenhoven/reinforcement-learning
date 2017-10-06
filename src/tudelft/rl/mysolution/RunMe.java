@@ -10,10 +10,14 @@ public class RunMe {
 		
 		//load the maze
 		//TODO replace this with the location to your maze on your file system
-		Maze maze = new Maze(new File("C:\\toy_maze.txt"));
-		
+		Maze maze = new Maze(new File("C:\\easy_maze.txt"));
+
+
+		int goalX = 24;
+		int goalY = 14;
 		//Set the reward at the bottom right to 10
-		maze.setR(maze.getState(9, 9), 10);
+		maze.setR(maze.getState(goalX, goalY), 10);
+
 				
 		//create a robot at starting and reset location (0,0) (top left)
 		Agent robot = new Agent(0,0);
@@ -27,7 +31,9 @@ public class RunMe {
 		boolean stop=false;
 
 		int steps = 0;
-		int criterion = 30000;
+		int trials = 0;
+		int criterionActions = 99999999;
+		int criterionTrials = 20;
 		double epsilon = 0.5;
 
 
@@ -38,12 +44,13 @@ public class RunMe {
 			robot.doAction(selection.getEGreedyAction(robot, maze, learn, epsilon), maze);
 			//learn.updateQ
 
-			if(robot.x == 9 && robot.y == 9){
+			if(robot.x == goalX && robot.y == goalY){
 				robot.reset();
+				trials++;
 			}
 			//TODO figure out a stopping criterion
 			steps++;
-			if(steps>=criterion){
+			if(steps>=criterionActions || trials >= criterionTrials){
 				stop = true;
 			}
 		}
