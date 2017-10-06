@@ -1,6 +1,7 @@
 package tudelft.rl.mysolution;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import tudelft.rl.*;
 
@@ -10,11 +11,11 @@ public class RunMe {
 		
 		//load the maze
 		//TODO replace this with the location to your maze on your file system
-		Maze maze = new Maze(new File("C:\\easy_maze.txt"));
+		Maze maze = new Maze(new File("C:\\toy_maze.txt"));
 
 
-		int goalX = 24;
-		int goalY = 14;
+		int goalX = 9;
+		int goalY = 9;
 		//Set the reward at the bottom right to 10
 		maze.setR(maze.getState(goalX, goalY), 10);
 
@@ -32,8 +33,12 @@ public class RunMe {
 
 		int steps = 0;
 		int trials = 0;
-		int criterionActions = 99999999;
-		int criterionTrials = 20;
+		boolean checkSteps = false;
+		int criterionActions = 10000;
+		int criterionTrials = 100;
+
+		double alpha = 0.7;
+		double gamma = 0.9;
 		double epsilon = 0.5;
 
 
@@ -41,16 +46,33 @@ public class RunMe {
 		//keep learning until you decide to stop
 		while (!stop) {
 			//TODO implement the action selection and learning cycle
-			robot.doAction(selection.getEGreedyAction(robot, maze, learn, epsilon), maze);
-			//learn.updateQ
+			Action nextAction = selection.getEGreedyAction(robot, maze, learn, epsilon);
+			State s = robot.getState(maze);
+
+
+			State new_state = robot.doAction(nextAction,maze);
+			double reward = maze.getR(s);
+			ArrayList<Action> possibleActions = maze.getValidActions(robot);
+
+			if(reward>0){
+				System.out.println("Found a reward");
+			}
+			learn.updateQ(s, nextAction, reward, new_state, possibleActions, alpha, gamma);
+
 
 			if(robot.x == goalX && robot.y == goalY){
 				robot.reset();
 				trials++;
 			}
-			//TODO figure out a stopping criterion
+
+
 			steps++;
-			if(steps>=criterionActions || trials >= criterionTrials){
+
+			if(checkSteps && steps >= criterionActions){
+				stop = true;
+			}
+
+			if(trials >= criterionTrials){
 				stop = true;
 			}
 		}
