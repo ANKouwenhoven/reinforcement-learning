@@ -28,11 +28,9 @@ public class MyQLearning extends QLearning {
 			}
 		}
 
-		double addedValue = alfa*(r + gamma * getQ(s_next,bestAction) - getQ(s,a));
-		double newQ = getQ(s,a) + addedValue;
+		double addedValue = alfa*(r + gamma * getQ(s_next, bestAction) - getQ(s, a));
+		double newQ = getQ(s, a) + addedValue;
 
 		setQ(s, a, newQ);
-		
 	}
-
 }
