@@ -41,3 +41,28 @@ plot(1:100,averageEasy);
 title('Performance average of 10 runs in Easy Maze with Q-learning');
 ylabel('Actions per trial');
 xlabel('Trial number');
+
+%%
+
+load('DataE_toy.mat');
+
+figure;
+hold on;
+averageE00 = mean(DataE00_toy(:,:),2);
+averageE02 = mean(DataE02_toy(:,:),2);
+averageE04 = mean(DataE04_toy(:,:),2);
+averageE06 = mean(DataE06_toy(:,:),2);
+averageE08 = mean(DataE08_toy(:,:),2);
+averageE10 = mean(DataE10_toy(:,:),2);
+
+plot(1:50,averageE00);
+plot(1:50,averageE02,'--');
+plot(1:50,averageE04,':');
+plot(1:50,averageE06,'-.');
+plot(1:50,averageE08);
+plot(1:50,averageE10,'--');
+legend('0.0','0.2','0.4','0.6','0.8','1.0');
+
+title('Performance average of 10 runs with different epsilons');
+ylabel('Actions per trial');
+xlabel('Trial number');
