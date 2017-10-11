@@ -12,9 +12,14 @@ public class RunMe {
 		//load the maze
 		//TODO replace this with the location to your maze on your file system
 		Maze maze = new Maze(new File("C:\\toy_maze.txt"));
+		//The size of the maze (10, 10) for toy and (25, 15) for easy
+		int[] mazeSize = {10, 10};
 
+		//The X coordinates of all rewards in the maze
 		int[] goalsX = {9, 9};
+		//The Y coordinates of all rewards in the maze
 		int[] goalsY = {9, 0};
+		//The values of all rewards in the maze
 		int[] rewards = {10, 5};
 		double[] correct = new double[1000];
 		double[] epsilons = new double[1000];
@@ -84,9 +89,9 @@ public class RunMe {
 		boolean runLast = true;
 
 		// Keep track of the final path of the agent to print it later
-		char[][] finalPath = new char[10][10];
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
+		char[][] finalPath = new char[mazeSize[0]][mazeSize[1]];
+		for (int i = 0; i < finalPath.length; i++) {
+			for (int j = 0; j < finalPath[1].length; j++) {
 				finalPath[i][j] = '#';
 			}
 		}
@@ -106,33 +111,31 @@ public class RunMe {
 		robot.reset();
 		String correctLabel = "For every trial, the agent either found the small reward (1.0) or the large reward (0.0):";
 		String epsilonsLabel = "For every trial, this is the agent's starting epsilon:";
-		printFinalMaze(10, 10, finalPath);
+		printFinalMaze(finalPath);
 		printOtherData(new double[][] {correct, epsilons}, new String[] {correctLabel, epsilonsLabel});
 	}
 
 	/**
 	 * Print out a representation of the final path traversed by the agent
-	 * @param sizeX - X size of the maze
-	 * @param sizeY - Y size of the maze
 	 * @param path - The final path traversed by the agent
 	 */
-	private static void printFinalMaze(int sizeX, int sizeY, char[][] path) {
+	private static void printFinalMaze(char[][] path) {
 		System.out.println("");
 		System.out.println("This is the final path traversed by the agent: ");
 
-		for (int i = 0; i < sizeX; i++) {
+		for (int i = 0; i < path.length; i++) {
 			System.out.print("- ");
 		}
 
 		System.out.println("");
-		for (int i = 0; i < sizeY; i++) {
-			for (int j = 0; j < sizeX; j++) {
+		for (int i = 0; i < path[1].length; i++) {
+			for (int j = 0; j < path.length; j++) {
 				System.out.print(path[j][i] + " ");
 			}
 			System.out.println("");
 		}
 
-		for (int i = 0; i < sizeX; i++) {
+		for (int i = 0; i < path.length; i++) {
 			System.out.print("- ");
 		}
 
